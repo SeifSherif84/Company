@@ -42,5 +42,46 @@ namespace Company.PL.Controllers
             }
             return View(departmentDto);
         }
+
+
+        [HttpGet]
+        public IActionResult UpdateForm(int Id)
+        {
+            Department? department = _departmentRepository.GetById(Id);
+            return View(department);
+        }
+
+
+        [HttpPost]
+        public IActionResult Update(int Id, Department departmentComing)
+        {
+            if (ModelState.IsValid)
+            {
+                Department? department = _departmentRepository.GetById(Id);
+                department.Code = departmentComing.Code;
+                department.Name = departmentComing.Name;
+                department.CreatedAt = departmentComing.CreatedAt;
+                int result = _departmentRepository.Update(department);
+                if(result > 0)
+                    return RedirectToAction("Index");
+            }
+            return View("UpdateForm", departmentComing);
+        }
+
+
+        public IActionResult Delete(int Id)
+        {
+            Department? department = _departmentRepository.GetById(Id);
+            _departmentRepository.Delete(department);
+            return RedirectToAction("Index");
+        }
+
+
+        public IActionResult Details(int Id)
+        {
+            Department? department = _departmentRepository.GetById(Id);
+            return View(department);
+        }
+
     }
 }
