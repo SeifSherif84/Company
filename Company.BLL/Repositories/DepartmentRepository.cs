@@ -1,0 +1,48 @@
+﻿using Company.BLL.Interfaces;
+using Company.DAL.Data.DBContexts;
+using Company.DAL.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Company.BLL.Repositories
+{
+    internal class DepartmentRepository : IDepartmentRepository
+    {
+        private readonly CompanyDbContext _CompanyDbContext;
+        public DepartmentRepository()
+        {
+            _CompanyDbContext = new CompanyDbContext();
+        }
+        public IEnumerable<Department> GetAll()
+        {
+           return _CompanyDbContext.Departments;
+        }
+
+        public Department? GetById(int id)
+        {
+            return _CompanyDbContext.Departments.Find(id);
+        }
+
+        public int Add(Department department)
+        {
+            _CompanyDbContext.Departments.Add(department);
+            return _CompanyDbContext.SaveChanges();
+        }
+
+        public int Update(Department department)
+        {
+            _CompanyDbContext.Departments.Update(department);
+            return _CompanyDbContext.SaveChanges();
+        }
+
+        public int Delete(Department department)
+        {
+            _CompanyDbContext.Departments.Remove(department);
+            return _CompanyDbContext.SaveChanges();
+        }
+
+    }
+}
