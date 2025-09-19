@@ -12,14 +12,14 @@ namespace Company.DAL.Data.DBContexts
     public class CompanyDbContext : DbContext
     {
 
-        public CompanyDbContext() : base() 
+        public CompanyDbContext(DbContextOptions<CompanyDbContext> options) : base(options) 
         {
             
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server = DESKTOP-C167I9J; Database = Company; Trusted_Connection = True; TrustServerCertificate = True");
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer("Server = DESKTOP-C167I9J; Database = Company; Trusted_Connection = True; TrustServerCertificate = True");
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Company.BLL.Interfaces
 {
-    internal interface IDepartmentRepository
+    public interface IDepartmentRepository
     {
         public IEnumerable<Department> GetAll();
         public Department? GetById(int id);
