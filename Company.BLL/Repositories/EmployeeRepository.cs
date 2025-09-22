@@ -9,11 +9,16 @@ using System.Threading.Tasks;
 
 namespace Company.BLL.Repositories
 {
-    internal class EmployeeRepository : GenericRepository<Employee>                                                   /*IEmployeeRepository*/
+    public class EmployeeRepository : GenericRepository<Employee> , IEmployeeRepository                                              /*IEmployeeRepository*/
     {
         public EmployeeRepository(CompanyDbContext CompanyDbContext) : base(CompanyDbContext) 
         {
             
+        }
+
+        public Employee? GetByName(string name)
+        {
+            throw new NotImplementedException();
         }
 
         #region Old Code

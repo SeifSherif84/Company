@@ -8,8 +8,8 @@ namespace Company.PL.Controllers
 {
     public class DepartmentController : Controller
     {
-        private readonly IGenericRepository<Department> _departmentRepository;
-        public DepartmentController(IGenericRepository<Department> departmentRepository)
+        private readonly IDepartmentRepository _departmentRepository;
+        public DepartmentController(IDepartmentRepository departmentRepository)
         {
             _departmentRepository = departmentRepository;
         }
