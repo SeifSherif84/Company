@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Employee>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>All Employees</h1>
+
+<br />
+<br />
+
+<a asp-controller="Employee" asp-action="Create" class="btn btn-primary">Create Employee</a>
+
+<br />
+<br />
+
+@if (Model.Count() > 0)
+{
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <td>Name</td>
+                <td>Age</td>
+                <td>Email</td>
+                <td>Address</td>
+                <td>Phone</td>
+                <td>Salary</td>
+                <td>IsActive</td>
+                <td>IsDeleted</td>
+                <td>@Html.DisplayNameFor(E => E.HiringDate)</td>
+                <td>@Html.DisplayNameFor(E => E.CreateAt)</td>
+                <td>Details</td>
+                <td>Update</td>
+                <td>Delete</td>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Age</td>
+                    <td>@item.Email</td>
+                    <td>@item.Address</td>
+                    <td>@item.Phone</td>
+                    <td>@item.Salary</td>
+                    <td>@item.IsActive</td>
+                    <td>@item.IsDeleted</td>
+                    <td>@item.HiringDate</td>
+                    <td>@item.CreateAt</td>
+                    <td>
+                        <a asp-controller="Employee" asp-action="Details" asp-route-Id="@item.Id" class="btn btn-warning">Details</a>
+                    </td>
+                    <td>
+                        <a asp-controller="Employee" asp-action="Update" asp-route-Id="@item.Id" class="btn btn-success">Update</a>
+                    </td>
+                    <td>
+                        <a asp-controller="Employee" asp-action="Delete" asp-route-Id="@item.Id" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="mt-4 alert alert-info">
+        <h4>
+            There Are No Any Employees :(
+        </h4>
+    </div>
+}
+
+
+

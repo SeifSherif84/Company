@@ -14,5 +14,6 @@ namespace Company.BLL.Interfaces
         public int Add(T department);
         public int Update(T department);
         public int Delete(T department);
+
     }
 }

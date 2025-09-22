@@ -48,16 +48,37 @@ namespace Company.PL.Controllers
         }
 
 
-        [HttpGet]
-        public IActionResult Update(int? Id)
+
+        public IActionResult Details(int? id, string ViewName = "Details")
         {
-            //if (Id is null)
-            //    return BadRequest("Invalid Id");
-            //Department? department = _departmentRepository.GetById(Id.Value); 
-            //if (department == null)
-            //    return NotFound(new { StatusCode = 404, Message = $"Department With Id = {Id.Value} Is Not Found" });
-            //return View(department); 
-            return Details(Id,"Update");
+            if (id == null)
+                return BadRequest("Id Is Not Valid !");
+            else
+            {
+                Department? department = _departmentRepository.GetById(id.Value);
+                if (department == null)
+                    return NotFound(new { StatusCode = 404, Message = $"Employee With Id = {id.Value} Is Not Found" });
+                else
+                    return View(ViewName, department);
+            }
+        }
+
+
+
+        [HttpGet]
+        public IActionResult Update(int? id)
+        {
+            //if (id == null)
+            //    return BadRequest("Id Is Not Valid !");
+            //else
+            //{
+            //    Department? department = _departmentRepository.GetById(id.Value);
+            //    if (department == null)
+            //        return NotFound(new { StatusCode = 404, Message = $"Employee With Id = {id.Value} Is Not Found" });
+            //    else
+            //        return View(department);
+            //}
+            return Details(id,"Update");
         }
 
 
@@ -76,32 +97,24 @@ namespace Company.PL.Controllers
                 else 
                     return BadRequest();
             }
-            return View("UpdateForm", department);
+            return View(department);
         }
 
 
 
-        public IActionResult Details(int? Id, string ViewName = "Details")
+        public IActionResult Delete(int? id)
         {
-            if (Id is null)
-                return BadRequest("Invalid Id");
-            Department? department = _departmentRepository.GetById(Id.Value);
-            if (department == null)
-                return NotFound(new { StatusCode = 404, Message = $"Department With Id = {Id.Value} Is Not Found" });
-            return View(ViewName,department);
-        }
-
-
-
-        public IActionResult Delete(int? Id)
-        {
-            //if (Id is null)
-            //    return BadRequest("Invalid Id");
-            //Department? department = _departmentRepository.GetById(Id.Value);
-            //if (department == null)
-            //    return NotFound(new { StatusCode = 404, Message = $"Department With Id = {Id.Value} Is Not Found" });
-            //return View(department);
-            return Details(Id, "Delete");
+            //if (id == null)
+            //    return BadRequest("Id Is Not Valid !");
+            //else
+            //{
+            //    Department? department = _departmentRepository.GetById(id.Value);
+            //    if (department == null)
+            //        return NotFound(new { StatusCode = 404, Message = $"Employee With Id = {id.Value} Is Not Found" });
+            //    else
+            //        return View(department);
+            //}
+            return Details(id,"Delete");
         }
 
 
