@@ -1,28 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Company.DAL.Models
+namespace Company.PL.Dtos
 {
-    public class Employee : BaseEntity
+    public class EmployeeDto
     {
-        //public int Id { get; set; }
-
         [Required(ErrorMessage = "Name Is Required !")]
         public string Name { get; set; }
 
-        [Range(20,60,ErrorMessage = "Age Is Not Valid !")]
+        [Range(20, 60, ErrorMessage = "Age Is Not Valid !")]
         public int? Age { get; set; }
 
-        [DataType(DataType.EmailAddress,ErrorMessage = "Email Is Not Valid !")]
+        [DataType(DataType.EmailAddress, ErrorMessage = "Email Is Not Valid !")]
         public string Email { get; set; }
 
         [RegularExpression(pattern: @"[0-9]{1,3}-[a-zA-Z]{5,10}-[a-zA-Z]{4,10}-[a-zA-Z]{5,10}$"
-                          ,ErrorMessage = "Address Is Must Like 123-Street,City-Country !")]
+                          , ErrorMessage = "Address Is Must Like 123-Street,City-Country !")]
         public string Address { get; set; }
 
         //[DataType(DataType.PhoneNumber)]
