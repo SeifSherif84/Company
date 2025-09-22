@@ -8,7 +8,8 @@
 <br />
 <br />
 
-<form asp-controller="Department" asp-action="Update" asp-route-Id="@Model.Id">
+<form asp-controller="Department" asp-action="Update" @* asp-route-Id="@Model.Id" *@>
+@*     <input asp-for="Id" type="hidden"/> *@
     <div class="my-3">
         <label asp-for="Code" class="col-form-label"></label>
         <input asp-for="Code" class="form-control" />
@@ -25,7 +26,7 @@
         <span asp-validation-for="CreatedAt" class="text-danger"></span>
     </div>
     <div class="my-3">
-        <input type="submit" value="Update" class="btn btn-primary" />
+        <input type="submit" value="Update" class="btn btn-success" />
         <a asp-controller="Department" asp-action="Index" class="btn btn-light">Back To List</a>
     </div>
 </form>

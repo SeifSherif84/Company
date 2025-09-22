@@ -13,11 +13,13 @@ namespace Company.PL.Controllers
         {
             _departmentRepository = departmentRepository;
         }
+
         public IActionResult Index()
         {
             var departments = _departmentRepository.GetAll();
             return View(departments);
         }
+
 
         [HttpGet]
         public IActionResult Create()
@@ -25,7 +27,9 @@ namespace Company.PL.Controllers
             return View();
         }
 
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(DepartmentDto departmentDto)
         {
             if (ModelState.IsValid) // Server Side Validation
@@ -45,43 +49,79 @@ namespace Company.PL.Controllers
 
 
         [HttpGet]
-        public IActionResult UpdateForm(int Id)
+        public IActionResult Update(int? Id)
         {
-            Department? department = _departmentRepository.GetById(Id);
-            return View(department);
+            //if (Id is null)
+            //    return BadRequest("Invalid Id");
+            //Department? department = _departmentRepository.GetById(Id.Value); 
+            //if (department == null)
+            //    return NotFound(new { StatusCode = 404, Message = $"Department With Id = {Id.Value} Is Not Found" });
+            //return View(department); 
+            return Details(Id,"Update");
         }
 
 
         [HttpPost]
-        public IActionResult Update(int Id, Department departmentComing)
+        [ValidateAntiForgeryToken]
+        public IActionResult Update([FromRoute]int Id ,Department department)
         {
             if (ModelState.IsValid)
             {
-                Department? department = _departmentRepository.GetById(Id);
-                department.Code = departmentComing.Code;
-                department.Name = departmentComing.Name;
-                department.CreatedAt = departmentComing.CreatedAt;
-                int result = _departmentRepository.Update(department);
-                if(result > 0)
+                if (Id == department.Id)
+                {
+                    int result = _departmentRepository.Update(department);
+                    if (result > 0)
+                        return RedirectToAction("Index");
+                }
+                else 
+                    return BadRequest();
+            }
+            return View("UpdateForm", department);
+        }
+
+
+
+        public IActionResult Details(int? Id, string ViewName = "Details")
+        {
+            if (Id is null)
+                return BadRequest("Invalid Id");
+            Department? department = _departmentRepository.GetById(Id.Value);
+            if (department == null)
+                return NotFound(new { StatusCode = 404, Message = $"Department With Id = {Id.Value} Is Not Found" });
+            return View(ViewName,department);
+        }
+
+
+
+        public IActionResult Delete(int? Id)
+        {
+            //if (Id is null)
+            //    return BadRequest("Invalid Id");
+            //Department? department = _departmentRepository.GetById(Id.Value);
+            //if (department == null)
+            //    return NotFound(new { StatusCode = 404, Message = $"Department With Id = {Id.Value} Is Not Found" });
+            //return View(department);
+            return Details(Id, "Delete");
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete([FromRoute] int Id, Department department)
+        {
+            if (Id == department.Id)
+            {
+                int result = _departmentRepository.Delete(department);
+                if (result > 0)
                     return RedirectToAction("Index");
             }
-            return View("UpdateForm", departmentComing);
-        }
+            else
+                return BadRequest();
 
-
-        public IActionResult Delete(int Id)
-        {
-            Department? department = _departmentRepository.GetById(Id);
-            _departmentRepository.Delete(department);
-            return RedirectToAction("Index");
-        }
-
-
-        public IActionResult Details(int Id)
-        {
-            Department? department = _departmentRepository.GetById(Id);
             return View(department);
         }
+
+
 
     }
 }

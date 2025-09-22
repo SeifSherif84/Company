@@ -3,6 +3,10 @@ using Company.BLL.Repositories;
 using Company.DAL.Data.DBContexts;
 using Microsoft.EntityFrameworkCore;
 
+#region MyRegion
+// https://chatgpt.com/share/68cdd6c3-1f14-8005-96d4-5db596ba34d7 
+#endregion
+
 namespace Company.PL
 {
     public class Program
