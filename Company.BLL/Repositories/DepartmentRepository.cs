@@ -13,6 +13,7 @@ namespace Company.BLL.Repositories
     {
         public DepartmentRepository(CompanyDbContext context) : base(context)
         {
+
         }
 
         #region Old Code
