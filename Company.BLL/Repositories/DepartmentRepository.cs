@@ -9,40 +9,46 @@ using System.Threading.Tasks;
 
 namespace Company.BLL.Repositories
 {
-    public class DepartmentRepository : IDepartmentRepository
+    public class DepartmentRepository : GenericRepository<Department>                                                /*IEmployeeRepository*/
     {
-        private readonly CompanyDbContext _CompanyDbContext;
-        public DepartmentRepository(CompanyDbContext CompanyDbContext)
+        public DepartmentRepository(CompanyDbContext context) : base(context)
         {
-            _CompanyDbContext = CompanyDbContext;
-        }
-        public IEnumerable<Department> GetAll()
-        {
-           return _CompanyDbContext.Departments;
         }
 
-        public Department? GetById(int id)
-        {
-            return _CompanyDbContext.Departments.Find(id);
-        }
+        #region Old Code
+        //private readonly CompanyDbContext _CompanyDbContext;
+        //public DepartmentRepository(CompanyDbContext CompanyDbContext)
+        //{
+        //    _CompanyDbContext = CompanyDbContext;
+        //}
+        //public IEnumerable<Department> GetAll()
+        //{
+        //   return _CompanyDbContext.Departments;
+        //}
 
-        public int Add(Department department)
-        {
-            _CompanyDbContext.Departments.Add(department);
-            return _CompanyDbContext.SaveChanges();
-        }
+        //public Department? GetById(int id)
+        //{
+        //    return _CompanyDbContext.Departments.Find(id);
+        //}
 
-        public int Update(Department department)
-        {
-            _CompanyDbContext.Departments.Update(department);
-            return _CompanyDbContext.SaveChanges();
-        }
+        //public int Add(Department department)
+        //{
+        //    _CompanyDbContext.Departments.Add(department);
+        //    return _CompanyDbContext.SaveChanges();
+        //}
 
-        public int Delete(Department department)
-        {
-            _CompanyDbContext.Departments.Remove(department);
-            return _CompanyDbContext.SaveChanges();
-        }
+        //public int Update(Department department)
+        //{
+        //    _CompanyDbContext.Departments.Update(department);
+        //    return _CompanyDbContext.SaveChanges();
+        //}
+
+        //public int Delete(Department department)
+        //{
+        //    _CompanyDbContext.Departments.Remove(department);
+        //    return _CompanyDbContext.SaveChanges();
+        //} 
+        #endregion
 
     }
 }
