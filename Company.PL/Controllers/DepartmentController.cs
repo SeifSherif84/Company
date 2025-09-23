@@ -48,8 +48,8 @@ namespace Company.PL.Controllers
         }
 
 
-
-        public IActionResult Details(int? id, string ViewName = "Details")
+        [HttpGet]
+        public IActionResult Details(int? id)
         {
             if (id == null)
                 return BadRequest("Id Is Not Valid !");
@@ -57,9 +57,17 @@ namespace Company.PL.Controllers
             {
                 Department? department = _departmentRepository.GetById(id.Value);
                 if (department == null)
-                    return NotFound(new { StatusCode = 404, Message = $"Employee With Id = {id.Value} Is Not Found" });
+                    return NotFound(new { StatusCode = 404, Message = $"Department With Id = {id.Value} Is Not Found" });
                 else
-                    return View(ViewName, department);
+                {
+                    DepartmentDto departmentDto = new DepartmentDto()
+                    {
+                        Code = department.Code,
+                        Name = department.Name,
+                        CreatedAt = department.CreatedAt,
+                    };
+                    return View(departmentDto);
+                }
             }
         }
 
@@ -68,72 +76,182 @@ namespace Company.PL.Controllers
         [HttpGet]
         public IActionResult Update(int? id)
         {
-            //if (id == null)
-            //    return BadRequest("Id Is Not Valid !");
-            //else
-            //{
-            //    Department? department = _departmentRepository.GetById(id.Value);
-            //    if (department == null)
-            //        return NotFound(new { StatusCode = 404, Message = $"Employee With Id = {id.Value} Is Not Found" });
-            //    else
-            //        return View(department);
-            //}
-            return Details(id,"Update");
+            if (id == null)
+                return BadRequest("Id Is Not Valid !");
+            else
+            {
+                Department? department = _departmentRepository.GetById(id.Value);
+                if (department == null)
+                    return NotFound(new { StatusCode = 404, Message = $"Department With Id = {id.Value} Is Not Found" });
+                else
+                {
+                    DepartmentDto departmentDto = new DepartmentDto()
+                    {
+                        Code = department.Code,
+                        Name = department.Name,
+                        CreatedAt = department.CreatedAt,
+                    };
+                    return View(departmentDto);
+                }
+            }
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Update([FromRoute]int Id ,Department department)
+        public IActionResult Update([FromRoute] int id, DepartmentDto departmentDto)
         {
             if (ModelState.IsValid)
             {
-                if (Id == department.Id)
+                Department department = new Department()
                 {
-                    int result = _departmentRepository.Update(department);
-                    if (result > 0)
-                        return RedirectToAction("Index");
-                }
-                else 
-                    return BadRequest();
+                    Id = id,
+                    Code = departmentDto.Code,
+                    Name = departmentDto.Name,
+                    CreatedAt = departmentDto.CreatedAt,
+                };
+                int result = _departmentRepository.Update(department);
+                if (result > 0)
+                    return RedirectToAction("Index");
             }
-            return View(department);
+            return View(departmentDto);
         }
 
 
 
         public IActionResult Delete(int? id)
         {
-            //if (id == null)
-            //    return BadRequest("Id Is Not Valid !");
-            //else
-            //{
-            //    Department? department = _departmentRepository.GetById(id.Value);
-            //    if (department == null)
-            //        return NotFound(new { StatusCode = 404, Message = $"Employee With Id = {id.Value} Is Not Found" });
-            //    else
-            //        return View(department);
-            //}
-            return Details(id,"Delete");
+            if (id == null)
+                return BadRequest("Id Is Not Valid !");
+            else
+            {
+                Department? department = _departmentRepository.GetById(id.Value);
+                if (department == null)
+                    return NotFound(new { StatusCode = 404, Message = $"Department With Id = {id.Value} Is Not Found" });
+                else
+                {
+                    DepartmentDto departmentDto = new DepartmentDto()
+                    {
+                        Code = department.Code,
+                        Name = department.Name,
+                        CreatedAt = department.CreatedAt,
+                    };
+                    return View(departmentDto);
+                }
+            }
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete([FromRoute] int Id, Department department)
+        public IActionResult Delete([FromRoute] int id, DepartmentDto departmentDto)
         {
-            if (Id == department.Id)
+            if (ModelState.IsValid)
             {
+                Department department = new Department()
+                {
+                    Id = id,
+                    Code = departmentDto.Code,
+                    Name = departmentDto.Name,
+                    CreatedAt = departmentDto.CreatedAt,
+                };
                 int result = _departmentRepository.Delete(department);
                 if (result > 0)
                     return RedirectToAction("Index");
             }
-            else
-                return BadRequest();
-
-            return View(department);
+            return View(departmentDto);
         }
 
+
+
+        #region Action_After_Using_Dto
+        //[HttpGet]
+        //public IActionResult Details(int? id, string ViewName = "Details")
+        //{
+        //    if (id == null)
+        //        return BadRequest("Id Is Not Valid !");
+        //    else
+        //    {
+        //        Department? department = _departmentRepository.GetById(id.Value);
+        //        if (department == null)
+        //            return NotFound(new { StatusCode = 404, Message = $"Employee With Id = {id.Value} Is Not Found" });
+        //        else
+        //            return View(ViewName, department);
+        //    }
+        //}
+
+
+
+        //[HttpGet]
+        //public IActionResult Update(int? id)
+        //{
+        //    //if (id == null)
+        //    //    return BadRequest("Id Is Not Valid !");
+        //    //else
+        //    //{
+        //    //    Department? department = _departmentRepository.GetById(id.Value);
+        //    //    if (department == null)
+        //    //        return NotFound(new { StatusCode = 404, Message = $"Employee With Id = {id.Value} Is Not Found" });
+        //    //    else
+        //    //        return View(department);
+        //    //}
+        //    return Details(id,"Update");
+        //}
+
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult Update([FromRoute]int Id ,Department department)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        if (Id == department.Id)
+        //        {
+        //            int result = _departmentRepository.Update(department);
+        //            if (result > 0)
+        //                return RedirectToAction("Index");
+        //        }
+        //        else 
+        //            return BadRequest();
+        //    }
+        //    return View(department);
+        //}
+
+
+
+        //public IActionResult Delete(int? id)
+        //{
+        //    //if (id == null)
+        //    //    return BadRequest("Id Is Not Valid !");
+        //    //else
+        //    //{
+        //    //    Department? department = _departmentRepository.GetById(id.Value);
+        //    //    if (department == null)
+        //    //        return NotFound(new { StatusCode = 404, Message = $"Employee With Id = {id.Value} Is Not Found" });
+        //    //    else
+        //    //        return View(department);
+        //    //}
+        //    return Details(id,"Delete");
+        //}
+
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult Delete([FromRoute] int Id, Department department)
+        //{
+        //    if (Id == department.Id)
+        //    {
+        //        int result = _departmentRepository.Delete(department);
+        //        if (result > 0)
+        //            return RedirectToAction("Index");
+        //    }
+        //    else
+        //        return BadRequest();
+
+        //    return View(department);
+        //}
+
+        #endregion
 
 
     }
