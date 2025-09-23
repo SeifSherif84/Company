@@ -1,4 +1,4 @@
-﻿@model Department
+﻿@model DepartmentDto
 @{
     ViewData["Title"] = "Details";
 }
@@ -9,20 +9,9 @@
 <br />
 
 <div>
-    <div class="my-3">
-        <label asp-for="Code" class="col-form-label"></label>
-        <input asp-for="Code" class="form-control" readonly/>
-    </div>
-    <div class="my-3">
-        <label asp-for="Name" class="col-form-label"></label>
-        <input asp-for="Name" class="form-control" readonly/>
 
-    </div>
-    <div class="my-3">
-        <label asp-for="CreatedAt" class="col-form-label"></label>
-        <input asp-for="CreatedAt" class="form-control" readonly/>
+    <partial name="PartialView/Details_Delete_PartialView" />
 
-    </div>
     <div class="my-3">
         <a asp-controller="Department" asp-action="Index" class="btn btn-warning">Back To List</a>
     </div>

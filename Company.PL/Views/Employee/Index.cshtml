@@ -48,15 +48,7 @@
                     <td>@item.IsDeleted</td>
                     <td>@item.HiringDate</td>
                     <td>@item.CreateAt</td>
-                    <td>
-                        <a asp-controller="Employee" asp-action="Details" asp-route-Id="@item.Id" class="btn btn-warning">Details</a>
-                    </td>
-                    <td>
-                        <a asp-controller="Employee" asp-action="Update" asp-route-Id="@item.Id" class="btn btn-success">Update</a>
-                    </td>
-                    <td>
-                        <a asp-controller="Employee" asp-action="Delete" asp-route-Id="@item.Id" class="btn btn-danger">Delete</a>
-                    </td>
+                    <partial name="Employee_Department_Index_PartialView" model="@item.Id" />
                 </tr>
             }
         </tbody>
