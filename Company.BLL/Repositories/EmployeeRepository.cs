@@ -1,6 +1,7 @@
 ﻿using Company.BLL.Interfaces;
 using Company.DAL.Data.DBContexts;
 using Company.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,14 +12,16 @@ namespace Company.BLL.Repositories
 {
     public class EmployeeRepository : GenericRepository<Employee>, IEmployeeRepository
     {
-        public EmployeeRepository(CompanyDbContext CompanyDbContext) : base(CompanyDbContext) 
+        private readonly CompanyDbContext _CompanyDbContext;
+
+        public EmployeeRepository(CompanyDbContext context) : base(context) 
         {
-            
+            _CompanyDbContext = context;
         }
 
-        public Employee? GetByName(string name)
+        public IEnumerable<Employee> GetByName(string? SearchInput)
         {
-            throw new NotImplementedException();
+            return _CompanyDbContext.Employees.Include(E => E.Department).Where(E => E.Name.ToLower().Contains(SearchInput.ToLower()));
         }
 
         #region Old Code

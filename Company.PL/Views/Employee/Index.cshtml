@@ -1,11 +1,29 @@
 ﻿@model IEnumerable<Employee>
 @{
     ViewData["Title"] = "Index";
+    string? Str1 = ViewData["Message1"] as String;
+    string? Str2 = ViewBag.Message2;
 }
 
 <h1>All Employees</h1>
 
 <br />
+
+<form @* asp-action="Index" method="get" *@>
+    <div>
+        <div class="row">
+            <div class="col-6">
+                <input placeholder="Search By Name" name="SearchInput" class="form-control" />
+            </div>
+            <div class="col-6">
+                <input type="submit" class="btn btn-success" value="Search" />
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
 <br />
 
 <a asp-controller="Employee" asp-action="Create" class="btn btn-primary">Create Employee</a>
@@ -28,6 +46,7 @@
                 <td>IsDeleted</td>
                 <td>@Html.DisplayNameFor(E => E.HiringDate)</td>
                 <td>@Html.DisplayNameFor(E => E.CreateAt)</td>
+                <td>Department</td>
                 <td>Details</td>
                 <td>Update</td>
                 <td>Delete</td>
@@ -48,6 +67,14 @@
                     <td>@item.IsDeleted</td>
                     <td>@item.HiringDate</td>
                     <td>@item.CreateAt</td>
+                    @if(item.Department is not null)
+                    {
+                        <td>@item.Department.Name</td>
+                    }
+                    else
+                    {
+                        <td>No Department</td>
+                    }
                     <partial name="Employee_Department_Index_PartialView" model="@item.Id" />
                 </tr>
             }

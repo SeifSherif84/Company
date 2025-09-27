@@ -2,7 +2,10 @@ using Company.BLL.Interfaces;
 using Company.BLL.Repositories;
 using Company.DAL.Data.DBContexts;
 using Company.DAL.Models;
+using Company.PL.Dependency_Injection;
+using Company.PL.ProfilesMapping;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 #region MyRegion
 // https://chatgpt.com/share/68cdd6c3-1f14-8005-96d4-5db596ba34d7 
@@ -18,13 +21,26 @@ namespace Company.PL
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-            builder.Services.AddScoped<IDepartmentRepository,DepartmentRepository>();
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             builder.Services.AddDbContext<CompanyDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
                 //options.UseSqlServer(builder.Configuration["Default"]);
             });
+
+            builder.Services.AddAutoMapper(M =>
+            {
+                M.AddProfile(new EmployeeProfile());
+                M.AddProfile(new DepartmentProfile());
+            });
+
+
+            builder.Services.AddScoped<IScoped, Scoped>();
+            builder.Services.AddTransient<ITransient, Transient>();
+            builder.Services.AddSingleton<ISingleton, Singleton>();
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

@@ -9,7 +9,7 @@ namespace Company.BLL.Interfaces
 {
     public interface IEmployeeRepository : IGenericRepository<Employee>
     {
-        public Employee? GetByName(string name);
+        public IEnumerable<Employee> GetByName(string? SearchInput);
 
         #region Old Code
         //public IEnumerable<Employee> GetAll();

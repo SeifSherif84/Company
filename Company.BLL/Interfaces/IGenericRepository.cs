@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Company.BLL.Interfaces
 {
-    public interface IGenericRepository<T> where T : BaseEntity
+    public interface IGenericRepository<TEntity> where TEntity : BaseEntity
     {
-        public IEnumerable<T> GetAll();
-        public T? GetById(int id);
-        public int Add(T department);
-        public int Update(T department);
-        public int Delete(T department);
+        public IEnumerable<TEntity> GetAll();
+        public TEntity? GetById(int id);
+        public int Add(TEntity department);
+        public int Update(TEntity department);
+        public int Delete(TEntity department);
 
     }
 }

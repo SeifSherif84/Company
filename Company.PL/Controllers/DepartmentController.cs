@@ -1,4 +1,5 @@
-﻿using Company.BLL.Interfaces;
+﻿using AutoMapper;
+using Company.BLL.Interfaces;
 using Company.BLL.Repositories;
 using Company.DAL.Models;
 using Company.PL.Dtos;
@@ -9,9 +10,13 @@ namespace Company.PL.Controllers
     public class DepartmentController : Controller
     {
         private readonly IDepartmentRepository _departmentRepository;
-        public DepartmentController(IDepartmentRepository departmentRepository)
+        private readonly IMapper _mapper;
+
+        public DepartmentController(IDepartmentRepository departmentRepository,
+                                    IMapper mapper)
         {
             _departmentRepository = departmentRepository;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
@@ -32,14 +37,9 @@ namespace Company.PL.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(DepartmentDto departmentDto)
         {
-            if (ModelState.IsValid) // Server Side Validation
+            if (ModelState.IsValid) 
             {
-                Department department = new Department()
-                {
-                    Code = departmentDto.Code,
-                    Name = departmentDto.Name,
-                    CreatedAt = departmentDto.CreatedAt,
-                };
+                var department = _mapper.Map<Department>(departmentDto);
                 var result = _departmentRepository.Add(department);
                 if(result > 0)
                     return RedirectToAction("Index");
@@ -60,12 +60,7 @@ namespace Company.PL.Controllers
                     return NotFound(new { StatusCode = 404, Message = $"Department With Id = {id.Value} Is Not Found" });
                 else
                 {
-                    DepartmentDto departmentDto = new DepartmentDto()
-                    {
-                        Code = department.Code,
-                        Name = department.Name,
-                        CreatedAt = department.CreatedAt,
-                    };
+                    var departmentDto = _mapper.Map<DepartmentDto>(department);
                     return View(departmentDto);
                 }
             }
@@ -85,12 +80,7 @@ namespace Company.PL.Controllers
                     return NotFound(new { StatusCode = 404, Message = $"Department With Id = {id.Value} Is Not Found" });
                 else
                 {
-                    DepartmentDto departmentDto = new DepartmentDto()
-                    {
-                        Code = department.Code,
-                        Name = department.Name,
-                        CreatedAt = department.CreatedAt,
-                    };
+                    var departmentDto = _mapper.Map<DepartmentDto>(department);
                     return View(departmentDto);
                 }
             }
@@ -103,13 +93,8 @@ namespace Company.PL.Controllers
         {
             if (ModelState.IsValid)
             {
-                Department department = new Department()
-                {
-                    Id = id,
-                    Code = departmentDto.Code,
-                    Name = departmentDto.Name,
-                    CreatedAt = departmentDto.CreatedAt,
-                };
+                var department = _mapper.Map<Department>(departmentDto);
+                department.Id = id;
                 int result = _departmentRepository.Update(department);
                 if (result > 0)
                     return RedirectToAction("Index");
@@ -130,12 +115,7 @@ namespace Company.PL.Controllers
                     return NotFound(new { StatusCode = 404, Message = $"Department With Id = {id.Value} Is Not Found" });
                 else
                 {
-                    DepartmentDto departmentDto = new DepartmentDto()
-                    {
-                        Code = department.Code,
-                        Name = department.Name,
-                        CreatedAt = department.CreatedAt,
-                    };
+                    var departmentDto = _mapper.Map<DepartmentDto>(department);
                     return View(departmentDto);
                 }
             }
@@ -148,20 +128,15 @@ namespace Company.PL.Controllers
         {
             if (ModelState.IsValid)
             {
-                Department department = new Department()
-                {
-                    Id = id,
-                    Code = departmentDto.Code,
-                    Name = departmentDto.Name,
-                    CreatedAt = departmentDto.CreatedAt,
-                };
+                //var department = _mapper.Map<Department>(departmentDto);
+                var department = _departmentRepository.GetById(id);
+                //department.Id = id;
                 int result = _departmentRepository.Delete(department);
                 if (result > 0)
                     return RedirectToAction("Index");
             }
             return View(departmentDto);
         }
-
 
 
         #region Action_After_Using_Dto

@@ -1,6 +1,7 @@
 ﻿using Company.BLL.Interfaces;
 using Company.DAL.Data.DBContexts;
 using Company.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Company.BLL.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
+    public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
     {
         private readonly CompanyDbContext _CompanyDbContext;
 
@@ -18,32 +19,38 @@ namespace Company.BLL.Repositories
             _CompanyDbContext = context;
         }
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<TEntity> GetAll()
         {
-            return _CompanyDbContext.Set<T>();
+            if(typeof(TEntity) == typeof(Employee))
+                return (IEnumerable<TEntity>) _CompanyDbContext.Employees.Include(E => E.Department);
+
+            return _CompanyDbContext.Set<TEntity>();
         }
 
-        public T? GetById(int id)
+        public TEntity? GetById(int id)
         {
-            return _CompanyDbContext.Set<T>().Find(id);
+            if (typeof(TEntity) == typeof(Employee))
+                return _CompanyDbContext.Employees.Include(E => E.Department).FirstOrDefault(E => E.Id == id) as TEntity;
+
+            return _CompanyDbContext.Set<TEntity>().Find(id);
         }
 
-        public int Add(T model)
+        public int Add(TEntity model)
         {
-            _CompanyDbContext.Set<T>().Add(model);
+            _CompanyDbContext.Set<TEntity>().Add(model);
             return _CompanyDbContext.SaveChanges();
         }
 
 
-        public int Update(T model)
+        public int Update(TEntity model)
         {
-            _CompanyDbContext.Set<T>().Update(model);
+            _CompanyDbContext.Set<TEntity>().Update(model);
             return _CompanyDbContext.SaveChanges();
         }
 
-        public int Delete(T model)
+        public int Delete(TEntity model)
         {
-            _CompanyDbContext.Set<T>().Remove(model);
+            _CompanyDbContext.Set<TEntity>().Remove(model);
             return _CompanyDbContext.SaveChanges();
         }
 

@@ -1,4 +1,5 @@
-﻿using Company.BLL.Interfaces;
+﻿using AutoMapper;
+using Company.BLL.Interfaces;
 using Company.BLL.Repositories;
 using Company.DAL.Models;
 using Company.PL.Dtos;
@@ -9,15 +10,28 @@ namespace Company.PL.Controllers
     public class EmployeeController : Controller
     {
         private readonly IEmployeeRepository _employeeRepository;
-        public EmployeeController(IEmployeeRepository employeeRepository)
+        //private readonly IDepartmentRepository _departmentRepository;
+        private readonly IMapper _mapper;
+
+        public EmployeeController(IEmployeeRepository employeeRepository,
+                                  IDepartmentRepository departmentRepository,
+                                  IMapper mapper)
         {
             _employeeRepository = employeeRepository;
+            //_departmentRepository = departmentRepository;
+            _mapper = mapper;
         }
 
+
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(string? SearchInput)
         {
-            var Employees = _employeeRepository.GetAll();
+            IEnumerable<Employee> Employees;
+            if (string.IsNullOrEmpty(SearchInput))
+                Employees = _employeeRepository.GetAll();
+            else 
+                Employees = _employeeRepository.GetByName(SearchInput);
+                
             return View(Employees);
         }
 
@@ -25,36 +39,24 @@ namespace Company.PL.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            //var departments = _departmentRepository.GetAll();
+            //ViewData["Departments"] = departments;
             return View();
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(EmployeeDto model)
+        public IActionResult Create(EmployeeDto employeeDto)
         {
             if (ModelState.IsValid)
             {
-                Employee employee = new Employee()
-                {
-                    Name = model.Name,
-                    Age = model.Age,
-                    Email = model.Email,
-                    Address = model.Address,
-                    Phone = model.Phone,
-                    Salary = model.Salary,
-                    IsActive = model.IsActive,
-                    IsDeleted = model.IsDeleted,
-                    HiringDate = model.HiringDate,
-                    CreateAt = model.CreateAt
-                };
+                var employee = _mapper.Map<Employee>(employeeDto);
                 int result = _employeeRepository.Add(employee);
                 if (result > 0)
-                {
                     return RedirectToAction("Index");
-                }
             }
-            return View(model);
+            return View(employeeDto);
         }
 
 
@@ -71,19 +73,7 @@ namespace Company.PL.Controllers
                     return NotFound(new { StatusCode = 404, Message = $"Employee With Id = {id.Value} Is Not Found" });
                 else
                 {
-                    EmployeeDto employeeDto = new EmployeeDto()
-                    {
-                        Name = employee.Name,
-                        Address = employee.Address,
-                        Age = employee.Age,
-                        CreateAt = employee.CreateAt,
-                        HiringDate = employee.HiringDate,
-                        Email = employee.Email,
-                        IsActive = employee.IsActive,
-                        IsDeleted = employee.IsDeleted,
-                        Phone = employee.Phone,
-                        Salary = employee.Salary
-                    };
+                    var employeeDto = _mapper.Map<EmployeeDto>(employee);
                     return View(employeeDto);
                 }
             }
@@ -103,19 +93,9 @@ namespace Company.PL.Controllers
                     return NotFound(new { StatusCode = 404, Message = $"Employee With Id = {id.Value} Is Not Found" });
                 else
                 {
-                    EmployeeDto employeeDto = new EmployeeDto()
-                    {
-                        Name = employee.Name,
-                        Address = employee.Address,
-                        Age = employee.Age,
-                        CreateAt = employee.CreateAt,
-                        HiringDate = employee.HiringDate,
-                        Email = employee.Email,
-                        IsActive = employee.IsActive,
-                        IsDeleted = employee.IsDeleted,
-                        Phone = employee.Phone,
-                        Salary = employee.Salary
-                    };
+                    //var departments = _departmentRepository.GetAll();
+                    //ViewData["Departments"] = departments;
+                    var employeeDto = _mapper.Map<EmployeeDto>(employee);
                     return View(employeeDto);
                 }
             }
@@ -128,20 +108,8 @@ namespace Company.PL.Controllers
         {
             if (ModelState.IsValid)
             {
-                Employee employee = new Employee()
-                {
-                    Id = id,
-                    Name = employeeDto.Name,
-                    Address = employeeDto.Address,
-                    Age = employeeDto.Age,
-                    CreateAt = employeeDto.CreateAt,
-                    HiringDate = employeeDto.HiringDate,
-                    Email = employeeDto.Email,
-                    IsActive = employeeDto.IsActive,
-                    IsDeleted = employeeDto.IsDeleted,
-                    Phone = employeeDto.Phone,
-                    Salary = employeeDto.Salary
-                };
+                var employee = _mapper.Map<Employee>(employeeDto);
+                employee.Id = id;
                 int result = _employeeRepository.Update(employee);
                 if (result > 0)
                     return RedirectToAction(nameof(Index));
@@ -163,19 +131,7 @@ namespace Company.PL.Controllers
                     return NotFound(new { StatusCode = 404, Message = $"Employee With Id = {id.Value} Is Not Found" });
                 else
                 {
-                    EmployeeDto employeeDto = new EmployeeDto()
-                    {
-                        Name = employee.Name,
-                        Address = employee.Address,
-                        Age = employee.Age,
-                        CreateAt = employee.CreateAt,
-                        HiringDate = employee.HiringDate,
-                        Email = employee.Email,
-                        IsActive = employee.IsActive,
-                        IsDeleted = employee.IsDeleted,
-                        Phone = employee.Phone,
-                        Salary = employee.Salary
-                    };
+                    var employeeDto = _mapper.Map<EmployeeDto>(employee);
                     return View(employeeDto);
                 }
             }
@@ -188,20 +144,9 @@ namespace Company.PL.Controllers
         {
             if (ModelState.IsValid)
             {
-                Employee employee = new Employee()
-                {
-                    Id = id,
-                    Name = employeeDto.Name,
-                    Address = employeeDto.Address,
-                    Age = employeeDto.Age,
-                    CreateAt = employeeDto.CreateAt,
-                    HiringDate = employeeDto.HiringDate,
-                    Email = employeeDto.Email,
-                    IsActive = employeeDto.IsActive,
-                    IsDeleted = employeeDto.IsDeleted,
-                    Phone = employeeDto.Phone,
-                    Salary = employeeDto.Salary
-                };
+                //var employee = _mapper.Map<Employee>(employeeDto);
+                var employee = _employeeRepository.GetById(id);
+                //employee.Id = id;
                 int result = _employeeRepository.Delete(employee);
                 if (result > 0)
                     return RedirectToAction(nameof(Index));

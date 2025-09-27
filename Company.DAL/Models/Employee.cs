@@ -22,5 +22,8 @@ namespace Company.DAL.Models
         public DateTime HiringDate { get; set; }
         public DateTime CreateAt { get; set; }
 
+        public int? DeptId { get; set; }
+        public Department? Department { get; set; }
+
     }
 }
