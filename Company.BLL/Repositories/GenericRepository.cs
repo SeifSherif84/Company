@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+// https://chatgpt.com/share/68da35d5-6d18-800f-8986-b55fbb334cba
+
 namespace Company.BLL.Repositories
 {
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
@@ -19,41 +21,41 @@ namespace Company.BLL.Repositories
             _CompanyDbContext = context;
         }
 
-        public IEnumerable<TEntity> GetAll()
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             if(typeof(TEntity) == typeof(Employee))
-                return (IEnumerable<TEntity>) _CompanyDbContext.Employees.Include(E => E.Department);
+                return (IEnumerable<TEntity>) await _CompanyDbContext.Employees.Include(E => E.Department).ToListAsync();
 
-            return _CompanyDbContext.Set<TEntity>();
+            return await _CompanyDbContext.Set<TEntity>().ToListAsync();
         }
 
-        public TEntity? GetById(int id)
+        public async Task<TEntity?> GetByIdAsync(int id)
         {
             if (typeof(TEntity) == typeof(Employee))
-                return _CompanyDbContext.Employees.Include(E => E.Department).FirstOrDefault(E => E.Id == id) as TEntity;
+                return await _CompanyDbContext.Employees.Include(E => E.Department).FirstOrDefaultAsync(E => E.Id == id) as TEntity;
 
-            return _CompanyDbContext.Set<TEntity>().Find(id);
+            return await _CompanyDbContext.Set<TEntity>().FindAsync(id);
         }
 
-        public int Add(TEntity model)
+        public async Task AddAsync(TEntity model)
         {
-            _CompanyDbContext.Set<TEntity>().Add(model);
-            return _CompanyDbContext.SaveChanges();
+            await _CompanyDbContext.Set<TEntity>().AddAsync(model);
         }
 
-
-        public int Update(TEntity model)
+        public void Update(TEntity model)
         {
             _CompanyDbContext.Set<TEntity>().Update(model);
-            return _CompanyDbContext.SaveChanges();
         }
 
-        public int Delete(TEntity model)
+        public void Delete(TEntity model)
         {
             _CompanyDbContext.Set<TEntity>().Remove(model);
-            return _CompanyDbContext.SaveChanges();
         }
 
+        //public int Save()
+        //{
+        //    return _CompanyDbContext.SaveChanges();
+        //}
 
     }
 }

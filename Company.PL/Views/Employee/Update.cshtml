@@ -8,8 +8,8 @@
 <br />
 <br />
 
-<form asp-controller="Employee" asp-action="Update">
-
+<form asp-controller="Employee" asp-action="Update" enctype="multipart/form-data">
+    <input asp-for="ImageName" hidden/>
     <partial name="PartialView/Create_Update_PartialView" />
 
     <div class="my-3">

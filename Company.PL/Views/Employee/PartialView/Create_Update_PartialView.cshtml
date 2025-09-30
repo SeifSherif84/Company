@@ -1,8 +1,8 @@
 ﻿@model EmployeeDto
-@inject IDepartmentRepository _departmentRepository
+@* @inject IDepartmentRepository _departmentRepository *@
 @{
-    IEnumerable<SelectListItem> departments = new SelectList(_departmentRepository.GetAll(), "Id", "Name");
-    // IEnumerable<SelectListItem> departments = new SelectList(ViewData["Departments"] as IEnumerable<Department>, "Id", "Name");
+    //IEnumerable<SelectListItem> departments = new SelectList(_departmentRepository.GetAll(), "Id", "Name");
+    IEnumerable<SelectListItem> departments = new SelectList(ViewData["Departments"] as IEnumerable<Department>, "Id", "Name");
 }
 <div class="my-3">
     <label asp-for="Name" class="col-form-label"></label>
@@ -58,3 +58,9 @@
         <option value="@null">-- Select Department --</option>
     </select>
 </div>
+<div class="my-3">
+    <label asp-for="Image" class="col-form-label"></label>
+    <input asp-for="Image" class="form-control" />
+</div>
+
+@* asp-for --> value , type , name *@

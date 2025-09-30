@@ -41,5 +41,9 @@ namespace Company.PL.Dtos
 
         [DisplayName("Department")]
         public string? DepartmentName { get; set; }
+
+
+        public IFormFile? Image { get; set; }
+        public string? ImageName { get; set; }
     }
 }

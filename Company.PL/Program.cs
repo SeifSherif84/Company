@@ -1,3 +1,4 @@
+using Company.BLL;
 using Company.BLL.Interfaces;
 using Company.BLL.Repositories;
 using Company.DAL.Data.DBContexts;
@@ -35,6 +36,7 @@ namespace Company.PL
                 M.AddProfile(new DepartmentProfile());
             });
 
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             builder.Services.AddScoped<IScoped, Scoped>();
             builder.Services.AddTransient<ITransient, Transient>();

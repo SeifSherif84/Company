@@ -19,9 +19,9 @@ namespace Company.BLL.Repositories
             _CompanyDbContext = context;
         }
 
-        public IEnumerable<Employee> GetByName(string? SearchInput)
+        public async Task<IEnumerable<Employee>> GetByNameAsync(string? SearchInput)
         {
-            return _CompanyDbContext.Employees.Include(E => E.Department).Where(E => E.Name.ToLower().Contains(SearchInput.ToLower()));
+            return await _CompanyDbContext.Employees.Include(E => E.Department).Where(E => E.Name.ToLower().Contains(SearchInput.ToLower())).ToListAsync();
         }
 
         #region Old Code
