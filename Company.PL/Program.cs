@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 #region MyRegion
 // https://chatgpt.com/share/68cdd6c3-1f14-8005-96d4-5db596ba34d7 
+// https://chatgpt.com/share/68db9306-062c-800f-ae25-eccb225a7ae0
 #endregion
 
 namespace Company.PL
