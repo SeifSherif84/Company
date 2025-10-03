@@ -13,18 +13,14 @@ namespace Company.PL.Controllers
     public class DepartmentController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-
-        //private readonly IDepartmentRepository _departmentRepository;
         private readonly IMapper _mapper;
 
-        public DepartmentController(//IDepartmentRepository departmentRepository,
-                                    IUnitOfWork unitOfWork,
-                                    IMapper mapper)
+        public DepartmentController(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            //_departmentRepository = departmentRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
+
 
         public async Task<IActionResult> Index()
         {

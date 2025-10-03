@@ -15,17 +15,10 @@ namespace Company.PL.Controllers
     public class EmployeeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        //private readonly IEmployeeRepository _employeeRepository;
-        //private readonly IDepartmentRepository _departmentRepository;
         private readonly IMapper _mapper;
 
-        public EmployeeController(//IEmployeeRepository employeeRepository,
-                                  //IDepartmentRepository departmentRepository,
-                                  IUnitOfWork unitOfWork,
-                                  IMapper mapper)
+        public EmployeeController(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            //_employeeRepository = employeeRepository;
-            //_departmentRepository = departmentRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }

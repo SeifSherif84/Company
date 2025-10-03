@@ -11,7 +11,8 @@ namespace Company.PL.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        public AccountController(UserManager<AppUser> userManager, 
+                                 SignInManager<AppUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -87,9 +88,6 @@ namespace Company.PL.Controllers
             }
             return View(model);
         }
-
-
-        // P@ssw0rd
 
 
     }
