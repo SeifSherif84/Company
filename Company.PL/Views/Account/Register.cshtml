@@ -1,0 +1,52 @@
+﻿@model RegistrationDto
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+}
+
+<div class="main-agileinfo">
+	<div class="agileits-top">
+		<div asp-validation-summary="All" class="my-2"></div>
+		<form asp-action="Register">
+			<div class="my-3">
+				<input asp-for="UserName" class="form-control" placeholder="Username"/>
+				<span asp-validation-for="UserName"></span>
+			</div>
+			<div class="my-3">
+				<input asp-for="FirstName" class="form-control" placeholder="First Name"/>
+				<span asp-validation-for="FirstName"></span>
+			</div>
+			<div class="my-3">
+				<input asp-for="LastName" class="form-control" placeholder="Last Name"/>
+				<span asp-validation-for="LastName"></span>
+			</div>
+			<div class="my-3">
+				<input asp-for="Email" class="form-control" placeholder="Email"/>
+				<span asp-validation-for="Email"></span>
+			</div>
+			<div class="my-3">
+				<input asp-for="Password" class="form-control" placeholder="Password"/>
+				<span asp-validation-for="Password"></span>
+			</div>
+			<div class="my-3">
+				<input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password"/>
+				<span asp-validation-for="ConfirmPassword"></span>
+			</div>
+			<div class="wthree-text">
+				<label class="anim">
+					<input asp-for="IsAgree" class="checkbox" required>
+					<b><span>I Agree To The Terms & Conditions</span></b>
+				</label>
+				<span asp-validation-for="IsAgree"></span>
+			</div>
+			<input type="submit" value="Register">
+		</form>
+		<p>Do You Have An Account? <a asp-action="Login" >Login Now!</a></p>
+	</div>
+</div>
+
+@section Registration_Validation_Section {
+	<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+

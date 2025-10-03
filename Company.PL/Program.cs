@@ -5,6 +5,7 @@ using Company.DAL.Data.DBContexts;
 using Company.DAL.Models;
 using Company.PL.Dependency_Injection;
 using Company.PL.ProfilesMapping;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -43,6 +44,14 @@ namespace Company.PL
             builder.Services.AddTransient<ITransient, Transient>();
             builder.Services.AddSingleton<ISingleton, Singleton>();
 
+            builder.Services.AddIdentity<AppUser, IdentityRole>()
+                            .AddEntityFrameworkStores<CompanyDbContext>();
+
+
+            builder.Services.ConfigureApplicationCookie(Config =>
+            {
+                Config.LoginPath = "/Account/Login";
+            });
 
             var app = builder.Build();
 
@@ -59,6 +68,7 @@ namespace Company.PL
 
             app.UseRouting();
 
+            app.UseAuthorization();
             app.UseAuthorization();
 
             app.MapControllerRoute(

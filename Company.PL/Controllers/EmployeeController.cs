@@ -6,9 +6,12 @@ using Company.PL.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Company.PL.DocumentProccessing;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Company.PL.Controllers
 {
+
+    [Authorize]
     public class EmployeeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
