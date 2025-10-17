@@ -4,7 +4,7 @@ using Company.BLL.Repositories;
 using Company.DAL.Models;
 using Company.PL.Dtos;
 using Microsoft.AspNetCore.Mvc;
-using Company.PL.DocumentProccessing;
+using Company.PL.Helper;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 
@@ -35,6 +35,20 @@ namespace Company.PL.Controllers
                 
             return View(Employees);
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Search(string? SearchInput)
+        {
+            IEnumerable<Employee> Employees;
+            if (string.IsNullOrEmpty(SearchInput))
+                Employees = await _unitOfWork._employeeRepository.GetAllAsync();
+            else
+                Employees = await _unitOfWork._employeeRepository.GetByNameAsync(SearchInput);
+
+            return PartialView("PartialView/EmployeeTable_PartialView",Employees);
+        }
+
 
 
         [HttpGet]

@@ -1,4 +1,4 @@
-﻿namespace Company.PL.DocumentProccessing
+﻿namespace Company.PL.Helper
 {
     public static class DocumentHelper
     {

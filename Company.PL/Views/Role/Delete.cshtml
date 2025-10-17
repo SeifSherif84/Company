@@ -1,0 +1,20 @@
+﻿@model RoleDto
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete Employee</h1>
+<br />
+<br />
+
+<form asp-controller="Role" asp-action="Delete">
+    <partial name="PartialView/Details_Delete_PartialView" />
+
+    <div class="my-3">
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        <a asp-controller="Role" asp-action="Index" class="btn btn-light">Back To List</a>
+    </div>
+</form>
+
+
+

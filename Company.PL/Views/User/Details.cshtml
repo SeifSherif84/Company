@@ -1,0 +1,18 @@
+﻿@model UserDto
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>User Details</h1>
+<br /> 
+<br />
+
+<div>
+
+    <partial name="PartialView/Details_Delete_PartialView" />
+
+    <div class="my-3">
+        <a asp-controller="User" asp-action="Index" class="btn btn-warning">Back To List</a>
+    </div>
+</div>
+

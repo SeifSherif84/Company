@@ -32,8 +32,11 @@ namespace Company.BLL.Repositories
         public async Task<TEntity?> GetByIdAsync(int id)
         {
             if (typeof(TEntity) == typeof(Employee))
-                return await _CompanyDbContext.Employees.Include(E => E.Department).FirstOrDefaultAsync(E => E.Id == id) as TEntity;
-
+            {
+                var Employee = await _CompanyDbContext.Employees.Include(E => E.Department)
+                                                           .FirstOrDefaultAsync(E => E.Id == id);
+                return Employee as TEntity;
+            }
             return await _CompanyDbContext.Set<TEntity>().FindAsync(id);
         }
 
@@ -51,6 +54,8 @@ namespace Company.BLL.Repositories
         {
             _CompanyDbContext.Set<TEntity>().Remove(model);
         }
+
+
 
         //public int Save()
         //{

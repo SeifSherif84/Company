@@ -9,6 +9,8 @@ namespace Company.PL.Dtos
         [Required(ErrorMessage = "Name Is Required !")]
         public string Name { get; set; }
 
+
+        [Required(ErrorMessage = "Age Is Required !")]
         [Range(20, 60, ErrorMessage = "Age Is Not Valid !")]
         public int? Age { get; set; }
 

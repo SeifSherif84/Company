@@ -1,0 +1,17 @@
+﻿@model RoleDto
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>User Details</h1>
+<br /> 
+<br />
+
+<div>
+    <partial name="PartialView/Details_Delete_PartialView" />
+
+    <div class="my-3">
+        <a asp-controller="Role" asp-action="Index" class="btn btn-warning">Back To List</a>
+    </div>
+</div>
+

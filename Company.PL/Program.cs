@@ -4,15 +4,16 @@ using Company.BLL.Repositories;
 using Company.DAL.Data.DBContexts;
 using Company.DAL.Models;
 using Company.PL.Dependency_Injection;
+using Company.PL.Helper.MailKitFeature;
+using Company.PL.Helper.TwilioFeature;
 using Company.PL.ProfilesMapping;
+using Microsoft.AspNetCore.Authentication.Facebook;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-#region MyRegion
-// https://chatgpt.com/share/68cdd6c3-1f14-8005-96d4-5db596ba34d7 
-// https://chatgpt.com/share/68db9306-062c-800f-ae25-eccb225a7ae0
-#endregion
+
 
 namespace Company.PL
 {
@@ -36,6 +37,8 @@ namespace Company.PL
             {
                 M.AddProfile(new EmployeeProfile());
                 M.AddProfile(new DepartmentProfile());
+                M.AddProfile(new UserProfile());
+                M.AddProfile(new RoleProfile());
             });
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -45,7 +48,78 @@ namespace Company.PL
             builder.Services.AddSingleton<ISingleton, Singleton>();
 
             builder.Services.AddIdentity<AppUser, IdentityRole>()
-                            .AddEntityFrameworkStores<CompanyDbContext>();
+                            .AddEntityFrameworkStores<CompanyDbContext>()
+                            .AddDefaultTokenProviders();
+
+            builder.Services.Configure<MailKitSetting>(builder.Configuration.GetSection("MailKitSetting"));
+            builder.Services.AddScoped<IMailService, MailService>();
+
+            builder.Services.Configure<TwilioSetting>(builder.Configuration.GetSection("TwilioSetting"));
+            builder.Services.AddScoped<ITwilioService, TwilioService>();
+
+
+
+            //builder.Services.AddAuthentication(o =>
+            //{
+            //    o.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
+            //    o.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+            //}).AddGoogle(o =>
+            //{
+            //    o.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+            //    o.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+            //});
+
+
+
+            //builder.Services.AddAuthentication(o =>
+            //{
+            //    o.DefaultAuthenticateScheme = FacebookDefaults.AuthenticationScheme;
+            //    o.DefaultChallengeScheme = FacebookDefaults.AuthenticationScheme;
+            //}).AddFacebook(o =>
+            //{
+            //    o.AppId = builder.Configuration["Authentication:Facebook:AppId"];
+            //    o.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
+            //});
+
+
+
+            // ============= GOOGLE AUTH =============
+            var googleConfig = builder.Configuration.GetSection("Authentication:Google");
+            if (!string.IsNullOrEmpty(googleConfig["ClientId"]) &&
+                !string.IsNullOrEmpty(googleConfig["ClientSecret"]))
+            {
+                builder.Services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+                })
+                .AddGoogle(options =>
+                {
+                    options.ClientId = googleConfig["ClientId"];
+                    options.ClientSecret = googleConfig["ClientSecret"];
+                });
+            }
+
+
+            // ============= FACEBOOK AUTH =============
+            var facebookConfig = builder.Configuration.GetSection("Authentication:Facebook");
+            if (!string.IsNullOrEmpty(facebookConfig["AppId"]) &&
+                !string.IsNullOrEmpty(facebookConfig["AppSecret"]))
+            {
+                builder.Services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = FacebookDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = FacebookDefaults.AuthenticationScheme;
+                })
+                .AddFacebook(options =>
+                {
+                    options.AppId = facebookConfig["AppId"];
+                    options.AppSecret = facebookConfig["AppSecret"];
+                });
+            }
+
+
+
 
 
             builder.Services.ConfigureApplicationCookie(Config =>

@@ -4,6 +4,7 @@ namespace Company.PL.Dtos
 {
     public class RegistrationDto
     {
+
         [Required(ErrorMessage = "Username Is Required")]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Username Must Be Between 3 And 50 Characters")]
         public string UserName { get; set; }
@@ -24,6 +25,13 @@ namespace Company.PL.Dtos
         [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", 
                            ErrorMessage = "Email Must Be In A Valid Format Like example@domain.com")]
         public string Email { get; set; }
+
+
+
+        [Required(ErrorMessage = "Phone number is required")]
+        [StringLength(15, MinimumLength = 11, ErrorMessage = "Invalid phone number format")]
+        public string PhoneNumber { get; set; }
+
 
 
         [Required(ErrorMessage = "Password Is Required")]
