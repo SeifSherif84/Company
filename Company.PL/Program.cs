@@ -101,22 +101,22 @@ namespace Company.PL
             }
 
 
-            // ============= FACEBOOK AUTH =============
-            var facebookConfig = builder.Configuration.GetSection("Authentication:Facebook");
-            if (!string.IsNullOrEmpty(facebookConfig["AppId"]) &&
-                !string.IsNullOrEmpty(facebookConfig["AppSecret"]))
-            {
-                builder.Services.AddAuthentication(options =>
-                {
-                    options.DefaultAuthenticateScheme = FacebookDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = FacebookDefaults.AuthenticationScheme;
-                })
-                .AddFacebook(options =>
-                {
-                    options.AppId = facebookConfig["AppId"];
-                    options.AppSecret = facebookConfig["AppSecret"];
-                });
-            }
+            //// ============= FACEBOOK AUTH =============
+            //var facebookConfig = builder.Configuration.GetSection("Authentication:Facebook");
+            //if (!string.IsNullOrEmpty(facebookConfig["AppId"]) &&
+            //    !string.IsNullOrEmpty(facebookConfig["AppSecret"]))
+            //{
+            //    builder.Services.AddAuthentication(options =>
+            //    {
+            //        options.DefaultAuthenticateScheme = FacebookDefaults.AuthenticationScheme;
+            //        options.DefaultChallengeScheme = FacebookDefaults.AuthenticationScheme;
+            //    })
+            //    .AddFacebook(options =>
+            //    {
+            //        options.AppId = facebookConfig["AppId"];
+            //        options.AppSecret = facebookConfig["AppSecret"];
+            //    });
+            //}
 
 
 
@@ -142,7 +142,7 @@ namespace Company.PL
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
